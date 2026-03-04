@@ -40,22 +40,6 @@ ENV VITE_PUBLIC_APP_URL=${VITE_PUBLIC_APP_URL}
 RUN NODE_OPTIONS=--max-old-space-size=6144 pnpm run build
 
 # ---------------------------------------------------------
-# ESTÁGIO 2: Desenvolvimento (Ideal para seu Easypanel)
-# ---------------------------------------------------------
-FROM build AS development
-
-# Variáveis para rodar no Docker do seu servidor
-ENV PORT=5173 \
-    HOST=0.0.0.0 \
-    RUNNING_IN_DOCKER=true \
-    VITE_LOG_LEVEL=info
-
-EXPOSE 5173
-
-# O comando 'dev' é o mais estável para evitar conflitos com o Wrangler/Cloudflare
-CMD ["pnpm", "run", "dev", "--host"]
-
-# ---------------------------------------------------------
 # ESTÁGIO 3: Produção (Opcional, mas aqui está para ser completo)
 # ---------------------------------------------------------
 FROM build AS bolt-ai-production
@@ -77,3 +61,19 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=40s --retries=3 \
 
 # Comando de produção (pode exigir ajustes no bindings.sh do repositório)
 CMD ["pnpm", "run", "dockerstart"]
+
+# ---------------------------------------------------------
+# ESTÁGIO 2: Desenvolvimento (Ideal para seu Easypanel)
+# ---------------------------------------------------------
+FROM build AS development
+
+# Variáveis para rodar no Docker do seu servidor
+ENV PORT=5173 \
+    HOST=0.0.0.0 \
+    RUNNING_IN_DOCKER=true \
+    VITE_LOG_LEVEL=info
+
+EXPOSE 5173
+
+# O comando 'dev' é o mais estável para evitar conflitos com o Wrangler/Cloudflare
+CMD ["pnpm", "run", "dev", "--host"]
