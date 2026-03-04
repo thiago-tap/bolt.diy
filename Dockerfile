@@ -37,7 +37,7 @@ ENV VITE_PUBLIC_APP_URL=${VITE_PUBLIC_APP_URL}
 
 # Executar o build do Remix/Vite com limite de memória aumentado (8GB do seu servidor permitem isso)
 # Isso evita o erro "remix: not found" pois o binário estará no node_modules
-RUN NODE_OPTIONS=--max-old-space-size=4096 pnpm run build
+RUN NODE_OPTIONS=--max-old-space-size=6144 pnpm run build
 
 # ---------------------------------------------------------
 # ESTÁGIO 2: Desenvolvimento (Ideal para seu Easypanel)
